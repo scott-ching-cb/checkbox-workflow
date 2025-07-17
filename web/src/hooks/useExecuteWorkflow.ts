@@ -1,12 +1,12 @@
 import { useState } from 'react';
 
-import type { ExecutionResults, WorkflowFormData } from '../types';
+import type { ExecutionResults, WorkflowEdge, WorkflowFormData, WorkflowNode } from '../types';
 
 interface ExecuteError {
   message: string;
 }
 
-export function useExecuteWorkflow(id: string) {
+export function useExecuteWorkflow(id: string, nodes: WorkflowNode[], edges: WorkflowEdge[]) {
   const [results, setResults] = useState<ExecutionResults | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -22,7 +22,8 @@ export function useExecuteWorkflow(id: string) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           formData,
-          condition: { operator: formData.operator, threshold: formData.threshold },
+          workflowNodes: nodes,
+          workflowEdges: edges
         }),
       });
       if (!res.ok) {

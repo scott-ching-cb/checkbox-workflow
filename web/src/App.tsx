@@ -31,7 +31,7 @@ function App() {
     results: executionResults,
     loading: isExecuting,
     resetExecuteResult,
-  } = useExecuteWorkflow(WORKFLOW_ID);
+  } = useExecuteWorkflow(WORKFLOW_ID, nodes, edges);
 
   // Defer the heavy graph updates
   const deferredNodes = useDeferredValue(nodes);
