@@ -1,0 +1,16 @@
+syntax = "proto3";
+package proto;
+option go_package = "/workflow";
+
+import "google/protobuf/struct.proto";
+import "node.proto";
+import "edge.proto";
+
+/**
+ * WorkflowResponse is the response provided to the client containing the Workflow configuration (nodes and edges).
+ */
+message WorkflowResponse {
+  repeated Edge edges = 1;
+  string id = 2;
+  repeated Node nodes = 3;
+}

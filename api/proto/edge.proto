@@ -1,0 +1,33 @@
+syntax = "proto3";
+package proto;
+option go_package = "/workflow";
+
+/**
+  * Edge is a Workflow edge connecting two nodes on the graph.
+ */
+message Edge {
+  message LabelStyle {
+    string fill = 1;
+    string font_weight = 2;
+  }
+
+  message Style {
+    string stroke = 1;
+    int32 stroke_width = 2;
+  }
+
+  optional bool animated = 1;
+  string id = 2;
+  optional string label = 3;
+  optional LabelStyle label_style = 4;
+  string source = 5;
+  optional string source_handle = 6;
+  optional Style style = 7;
+  string target = 8;
+  optional string target_handle = 9;
+  string type = 10;
+}
+
+message Edges {
+  repeated Edge edges = 1;
+}

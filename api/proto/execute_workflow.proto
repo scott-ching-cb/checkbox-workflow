@@ -1,0 +1,108 @@
+syntax = "proto3";
+package proto;
+option go_package = "/workflow";
+
+import "google/protobuf/struct.proto";
+import "google/protobuf/wrappers.proto";
+import "node.proto";
+import "edge.proto";
+
+/**
+ * WorkflowFormData is the form data, input by the user, to perform weather workflow alert check based on a threshold.
+ */
+message WorkflowFormData {
+  string city = 1;
+  string email = 2;
+  string name = 3;
+  string operator = 4;
+  double threshold = 5;
+}
+
+/**
+ * ExecuteWorkflowRequest is the request body for updating and executing a workflow.
+ * Defined in spec section 'Detailed Requirements' sub-section 2.
+ */
+message ExecuteWorkflowRequest {
+  message Condition {
+    string operator = 1;
+    double threshold = 2;
+  }
+
+  Condition condition = 1;
+  WorkflowFormData form_data = 2;
+  repeated Edge workflow_edges = 3;
+  repeated Node workflow_nodes = 4;
+}
+
+/**
+ * ExecuteError is the error returned if the validation or persistence of the workflow fails.
+ */
+message ExecuteError {
+  string message = 1;
+}
+
+/**
+ * ExecutionStep summary of the execution step for a specific workflow node.
+ */
+message ExecutionStep {
+  message Output {
+    message ApiResponse {
+      google.protobuf.Value data = 1;
+      string endpoint = 2;
+      string method = 3;
+      int32 status_code = 4;
+    }
+
+    message ConditionResult {
+      string expression = 1;
+      string operator = 2;
+      bool result = 3;
+      double temperature = 4;
+      double threshold = 5;
+    };
+
+    message EmailContent {
+      string body = 1;
+      string subject = 2;
+      optional string timestamp = 3;
+      string to = 4;
+    }
+
+    optional ApiResponse api_response = 1;
+    optional ConditionResult condition_result = 2;
+    map<string, google.protobuf.Value> details = 3;
+    optional EmailContent email_content = 4;
+    optional WorkflowFormData form_data = 5;
+    string message = 6;
+  }
+
+  string description = 1;
+  google.protobuf.Int64Value duration = 2;
+  optional string error = 3;
+  string label = 4;
+  string node_id = 5;
+  string node_type = 6;
+  Output output = 7;
+  string status = 8;
+  int32 step_number = 9;
+  string timestamp = 10;
+}
+
+/**
+ * ExecutionResults contains a summary response to the client upon completion or failure of workflow execution.
+ */
+message ExecutionResults {
+  message ExecutionMetadata {
+    optional string environment = 1;
+    optional string triggered_by = 2;
+    optional string workflow_version = 3;
+  }
+
+  string end_time = 1;
+  string execution_id = 2;
+  optional ExecutionMetadata metadata = 3;
+  string start_time = 4;
+  string status = 5;
+  repeated ExecutionStep steps = 6;
+  optional google.protobuf.Int64Value total_duration = 7;
+}

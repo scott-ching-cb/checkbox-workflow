@@ -1,0 +1,61 @@
+syntax = "proto3";
+package proto;
+option go_package = "/workflow";
+
+import "google/protobuf/struct.proto";
+
+/**
+ * Metadata represents the information provided for configuration of a specific node.
+ */
+message MetaData {
+  message EmailTemplate {
+    string body = 1;
+    string subject = 2;
+  }
+
+  message HasHandles {
+    google.protobuf.Value source = 1;
+    google.protobuf.Value target = 2;
+  }
+
+  message Option {
+    string city = 1;
+    double lat = 2;
+    double lon = 3;
+  }
+
+  optional string api_endpoint = 1;
+  optional string condition_expression = 2;
+  optional EmailTemplate email_template = 3;
+  HasHandles has_handles = 4;
+  repeated string input_fields = 5;
+  repeated string input_variables = 6;
+  repeated Option options = 7;
+  repeated string output_variables = 8;
+}
+
+/**
+ * Node is a node within the Workflow which represents a task or action executed.
+ */
+message Node {
+  message Data {
+    string description = 1;
+    string label = 2;
+    MetaData metadata = 3;
+    optional string type = 4;
+  }
+
+  message Position {
+    int32 x = 1;
+    int32 y = 2;
+  }
+
+  Data data = 1;
+  string id = 2;
+  Position position = 3;
+  string type = 4;
+}
+
+message Nodes {
+  repeated Node nodes = 1;
+}

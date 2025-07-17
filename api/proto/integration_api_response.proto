@@ -1,0 +1,37 @@
+syntax = "proto3";
+package proto;
+option go_package = "/workflow";
+
+message IntegrationApiResponse {
+  message CurrentWeatherUnits {
+    string time = 1;
+    string interval = 2;
+    string temperature = 3;
+    string wind_speed = 4 [json_name="windspeed"];
+    string wind_direction = 5 [json_name="winddirection"];
+    string is_day = 6 [json_name="isday"];
+    string weather_code = 7 [json_name="weathercode"];
+  }
+
+  message CurrentWeather {
+    string time = 1;
+    int64 interval = 2;
+    double temperature = 3;
+    double wind_speed = 4 [json_name="windspeed"];
+    double wind_direction = 5 [json_name="winddirection"];
+    int64 is_day = 6 [json_name="is_day"];
+    int64 weather_code = 7 [json_name="weathercode"];
+  }
+
+  double latitude = 1;
+  double longitude = 2;
+  double generation_time_ms = 3 [json_name="generationtime_ms"];
+  int64 utc_offset_seconds = 4 [json_name="utc_offset_seconds"];
+  string timezone =  5;
+  string timezone_abbreviation = 6 [json_name="timezone_abbreviation"];
+  double elevation = 7;
+  CurrentWeatherUnits current_weather_units = 8 [json_name="current_weather_units"];
+  CurrentWeather current_weather = 9 [json_name="current_weather"];
+  optional bool error = 10;
+  optional string reason = 11;
+}
