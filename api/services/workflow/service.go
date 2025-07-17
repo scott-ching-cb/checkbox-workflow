@@ -1,18 +1,28 @@
 package workflow
 
 import (
-	"net/http"
-
 	"github.com/gorilla/mux"
 	"github.com/jackc/pgx/v5"
+	"net/http"
+	"workflow-code-test/api/services/workflow/store"
 )
 
-type Service struct {
-	db *pgx.Conn
+type ServiceHandler interface {
+	HandleExecuteWorkflow(w http.ResponseWriter, r *http.Request)
+	HandleGetWorkflow(w http.ResponseWriter, r *http.Request)
+	LoadRoutes(parentRouter *mux.Router, isProduction bool)
 }
 
-func NewService(db *pgx.Conn) (*Service, error) {
-	return &Service{db: db}, nil
+type Service struct {
+	DB    *pgx.Conn
+	Store store.Store
+}
+
+func NewService(db *pgx.Conn) (ServiceHandler, error) {
+	return &Service{
+		DB:    db,
+		Store: store.NewStore(db),
+	}, nil
 }
 
 // jsonMiddleware sets the Content-Type header to application/json
