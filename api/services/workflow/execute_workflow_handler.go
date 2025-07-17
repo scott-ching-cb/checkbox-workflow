@@ -151,7 +151,7 @@ func (s *Service) HandleExecuteWorkflow(w http.ResponseWriter, r *http.Request) 
 		WorkflowId: workflowId,
 	})
 	if err != nil {
-		slog.Error("api : failed to execute workflow", id, err)
+		slog.Error("api : failed to execute workflow", "id", id, "err", err)
 		w.WriteHeader(http.StatusBadRequest)
 		rawResponseError := &workflow.ExecuteError{
 			Message: "invalid workflow id or request body",
@@ -171,7 +171,7 @@ func (s *Service) HandleExecuteWorkflow(w http.ResponseWriter, r *http.Request) 
 	// Return summary of execution as response
 	executionResultsJSON, err := protojson.Marshal(executionResults)
 	if err != nil {
-		slog.Error("api : failed to marshal response for workflow execution results", id, err)
+		slog.Error("api : failed to marshal response for workflow execution results", "id", id, "err", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}

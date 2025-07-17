@@ -17,7 +17,7 @@ func (s *Service) HandleGetWorkflow(w http.ResponseWriter, r *http.Request) {
 	slog.Debug("Returning workflow definition for id", "id", id)
 	workflowId, err := uuid.Parse(id)
 	if err != nil {
-		slog.Error("Failed to parse workflow id", id, err)
+		slog.Error("Failed to parse workflow id", "id", id, "err", err)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
