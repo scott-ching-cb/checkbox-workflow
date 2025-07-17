@@ -10,7 +10,6 @@ import (
 )
 
 func TestValidateNodes(t *testing.T) {
-
 	type ValidateNodesParams struct {
 		ExpectedError string
 		Nodes         func() []*workflow.Node

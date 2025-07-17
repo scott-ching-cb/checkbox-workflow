@@ -11,7 +11,6 @@ import (
 )
 
 func TestValidateEdges(t *testing.T) {
-
 	type ValidateEdgesParams struct {
 		Edges         []*workflow.Edge
 		ExpectedError string
